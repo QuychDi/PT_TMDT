@@ -1,0 +1,247 @@
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+<div class="container-fluid">
+    <div class="row mb-2">
+        <div class="col-sm-6">
+            <h1>Phản hồi báo cáo</h1>
+        </div>
+        <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+                <li class="breadcrumb-item"><a href="index.php">Home</a></li>
+                <li class="breadcrumb-item active">Phản hồi báo cáo</li>
+            </ol>
+        </div>
+    </div>
+</div>
+<!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <!-- Default box -->
+    <div class="card">
+        <div class="card-header">
+
+            <div class="row">
+                <div class="col-sm-12 col-md-9">
+
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Trạng thái:</label>
+                                <select id="selectState" class="form-control" name="sortBy">
+                                    <option value="All">Tất cả</option>
+                                    <option value="0">Chưa xử lý</option>
+                                    <option value="1">Đã xử lý</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="col-sm-6 col-md-3">
+                    <div class="input-group mt-3 pt-3">
+                        <input id="searchInput" type="search" class="form-control" placeholder="Type your keywords here">
+                        <div class="input-group-append">
+                            <button id="btnSearch" type="submit" class="btn btn-default">
+                        <i class="fa fa-search"></i>
+                    </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <table id="example2" class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th data-orderable="false" class="text-center">Người báo cáo</th>
+                        <th data-orderable="false" class="text-center">Nội dung báo cáo</th>
+                        <th class="text-center">Thời gian</th>
+                        <th data-orderable="false" class="text-center">Sản phẩm</th>
+                        <th class="text-center">Trạng thái</th>
+                        <th data-orderable="false" class="text-center">Thao tác</th>
+                    </tr>
+                </thead>
+                <tbody id="dataTable">
+                    <tr class="text-center">
+                        <td class="align-middle">1</td>
+                        <td class="align-middle">Dung Thành Tâm</td>
+                        <td class="align-middle">Sản phẩm sai qui định</td>
+                        <td class="align-middle">Sản phẩm sai qui định</td>
+                        <td class="align-middle"><a href="../index.php?menu=chitietsp" target="_blank">TMDT/chitietsanpham</a></td>
+                        <td class="project-actions text-right text-center align-middle">
+                            <select class="btn btn-info btnEdit" id="" style=""> 
+                                <option value="Đang xử lý">-- Chọn --</option>
+                                <option value="hiddenProduct">Ẩn sản phẩm</option>
+                                <option value="blockAccount">Khóa tài khoản người bán</option>
+                            </select>
+                        </td>
+                        <td class="align-middle">
+                            <button type="button" class="btn btn-primary btn-sm btnEdit" data-toggle="modal" data-target="#modal-sm" value="${nd.translatorId}"> 
+                                Xác nhận
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+
+                <tfoot>
+                    <tr>
+                        <th data-orderable="false" class="text-center">Người báo cáo</th>
+                        <th data-orderable="false" class="text-center">Nội dung báo cáo</th>
+                        <th class="text-center">Thời gian</th>
+                        <th data-orderable="false" class="text-center">Sản phẩm</th>
+                        <th class="text-center">Trạng thái</th>
+                        <th data-orderable="false" class="text-center">Thao tác</th>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+        <!-- /.card-body -->
+        <!-- /.card-body -->
+    </div>
+    <!-- /.card -->
+    <!-- /.modal -->
+
+    <div class="modal fade" id="modal-lg">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Thông tin sách</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                </div>
+
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+
+</section>
+  
+<script>
+    function updateStatus(idsp, idtv) {
+            fetch(`http://localhost/TMDT/admin/modules/reportCheck.php?idsp=${idsp}&idtv=${idtv}`)
+                    .then(data => {
+                        if (data.status == 200) {
+                            toastr.success('Đã xử lý thành công')
+                        }
+                        else {
+                            toastr.error('Đã có lỗi xảy ra.')
+                        }
+
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+        }
+    !async function() {
+        const dataTable =  document.getElementById("dataTable");
+        const modalBody = document.querySelector('.modal-body');
+
+        function render(url) {
+                let api = url ? url : "http://localhost/TMDT/admin/modules/api/report.php"
+                let data = fetch(api)
+                .then(response => response.json())
+                .then(data => {
+                        let reportHTML = data.map((bc, index) => {
+                            let handlePro = ``;
+                            if(bc.SP_TRANGTHAI==1) {
+                                message = 'Mở khóa sản phẩm thành công';
+                                handlePro = `
+                                    <form onsubmit='updateStatus(${bc.SP_MA}, ${bc.TVBC_MA})' action="./modules/productBlock.php?state=0" method="POST" class="d-inline-block">
+                                        <button type="submit" name="btnHandle" class="btn btn-danger btn-sm pl-4 pr-4" value="${bc.SP_MA}">
+                                            <i class="fas fa-lock"></i>
+                                                Khóa sản phẩm
+                                        </button>
+                                    </form>
+                                `;
+                            } else handlePro = `
+                                    <form onsubmit='updateStatus(${bc.SP_MA}, ${bc.TVBC_MA})' action="./modules/productBlock.php?state=1" method="POST" class="d-inline-block">
+                                        <button type="submit" name="btnHandle" class="btn btn-info btn-sm pl-2 pr-3" value="${bc.SP_MA}">
+                                            <i class="fas fa-lock-open"></i>
+                                                Mở khóa sản phẩm
+                                        </button>
+                                    </form>
+                                `;
+                            let handleMem = ``;
+                            if(bc.TK_TRANGTHAI==1) {
+                                message = 'Mở khóa sản phẩm thành công';
+                                handleMem = `
+                                    <form onsubmit='updateStatus(${bc.SP_MA}, ${bc.TVBC_MA})' action="./modules/memberBlock.php?state=0" method="POST" class="d-inline-block">
+                                        <button type="submit" name="btnHandleMem" class="btn btn-danger btn-sm pl-4 pr-4" value="${bc.TV_MA}">
+                                            <i class="fas fa-lock"></i>
+                                                Khóa thành viên
+                                        </button>
+                                    </form>
+                                `;
+                            } else handleMem = `
+                                    <form onsubmit='updateStatus(${bc.SP_MA}, ${bc.TVBC_MA})' action="./modules/memberBlock.php?state=1" method="POST" class="d-inline-block">
+                                        <button type="submit" name="btnHandleMem" class="btn btn-info btn-sm pl-2 pr-3" value="${bc.TV_MA}">
+                                            <i class="fas fa-lock-open"></i>
+                                                Mở khóa thành viên
+                                        </button>
+                                    </form>
+                                `;
+                            return `
+                                    <tr class="text-center">
+                                        <td class="align-middle">${bc.TV_TEN}</td>
+                                        <td class="align-middle">${bc.BC_NOIDUNG}</td>
+                                        <td class="align-middle">${bc.BC_THOIDIEM}</td>
+                                        <td class="align-middle"><a href="../index.php?menu=chitietsp&masp=${bc.SP_MA}&matrang=${bc.TV_MA}" target="_blank">Xem sản phẩm</a></td>
+                                        <td class="align-middle">${bc.BC_TRANGTHAI == 1 ? 'Đã xử lý' : 'Chưa xử lý'}</td>
+                                        <td class="project-actions text-right text-center align-middle">
+                                            ${handlePro}
+                                            ${handleMem}
+                                        </td>
+                                    </tr>`
+                        });
+
+                    dataTable.innerHTML = reportHTML.join('');
+                    dataTablesLoad();
+
+                    return data;
+                })
+                .catch(error => {
+                    console.log(error);
+                });
+        };
+        render();
+
+        const filterOpt = document.querySelector("#selectState");
+        filterOpt.onchange = function() {
+            if(filterOpt.value!='All') {
+                desTroyDataTables();
+                render("http://localhost/TMDT/admin/modules/api/report.php?state=" + filterOpt.value);
+            } else {
+                desTroyDataTables();
+                render();
+            }
+        }
+
+        const btnSearch = document.querySelector("#btnSearch");
+        function search() {
+            let noidung = document.querySelector("#searchInput").value;
+            desTroyDataTables();
+            render("http://localhost/TMDT/admin/modules/api/report.php?noidung=" + noidung);
+        };
+        btnSearch.onclick = search;
+        document.querySelector('#searchInput').onkeydown = function(event){ 
+                var keyCode = (event.keyCode ? event.keyCode : event.which);
+                if (keyCode == 13) {
+                    search();
+                }
+            };
+    }();
+    
+    
+</script>

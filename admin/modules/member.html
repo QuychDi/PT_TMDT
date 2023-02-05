@@ -1,0 +1,371 @@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Quản lý thành viên</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="index.php">Home</a></li>
+                    <li class="breadcrumb-item active">Quản lý thành viên</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+    <!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+<section class="content">
+
+    <!-- Default box -->
+    <div class="card">
+        <div class="card-header">
+            <div class="row">
+                <div class="col-sm-12 col-md-9">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Trạng thái tài khoản</label>
+                                <select id="selectPermission" class="form-control" name="category">
+                                    <option value="all" selected>Tất cả</option>
+                                    <option value="1">Bình thường</option>
+                                    <option value="0">Tạm khóa</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-6 col-md-3">
+
+                    <div class="input-group mt-3 pt-3">
+                        <input type="search" class="form-control" id="inputSearch" placeholder="Tìm kiếm">
+                        <div class="input-group-append">
+                            <button type="submit" class="btn btn-default" id="btnSearch">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <table id="example2" class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th class="text-center">Mã</th>
+                        <th class="text-center">Họ và tên</th>
+                        <th data-orderable="false" class="text-center">Ngày sinh</th>
+                        <th data-orderable="false" class="text-center">Email</th>
+                        <th data-orderable="false" class="text-center">Số điện thoại</th>
+                        <th data-orderable="false" class="text-center">Trạng thái tài khoản</th>
+                        <th data-orderable="false" class="text-center">Thao tác</th>
+                    </tr>
+                </thead>
+                <tbody id="dataTable">
+
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th class="text-center">Mã</th>
+                        <th class="text-center">Họ và tên</th>
+                        <th data-orderable="false" class="text-center">Ngày sinh</th>
+                        <th data-orderable="false" class="text-center">Email</th>
+                        <th data-orderable="false" class="text-center">Số điện thoại</th>
+                        <th data-orderable="false" class="text-center">Trạng thái tài khoản</th>
+                        <th data-orderable="false" class="text-center">Thao tác</th>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+        <!-- /.card-body -->
+    </div>
+</section>
+
+<!-- Modal -->
+<div class="modal" id="viewModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title font-weight-bold">Xem thành viên</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="viewModelBody">
+                <div class="info-member">
+                    <div class="info-member-header text-center">
+                        <h5 class="font-weight-bold">Thông tin cá nhân</h5>
+                        <hr>
+                    </div>
+                    <div class="info-member-body">
+                        <div class="row align-items-center mb-3">
+                            <h6 class="col-6 mb-0 font-weight-bold ">Mã thành viên:</h6>
+                            <p class="col-6 mb-0"></p>
+                        </div>
+                        <div class="row align-items-center mb-3">
+                            <h6 class="col-6 mb-0 font-weight-bold ">Họ và tên:</h6>
+                            <p class="col-6 mb-0"></p>
+                        </div>
+                        <div class="row align-items-center mb-3">
+                            <h6 class="col-6 mb-0 font-weight-bold ">Ngày sinh:</h6>
+                            <p class="col-6 mb-0"></p>
+                        </div>
+                        <div class="row align-items-center mb-3">
+                            <h6 class="col-6 mb-0 font-weight-bold ">Số điện thoại:</h6>
+                            <p class="col-6 mb-0"></p>
+                        </div>
+                        <div class="row align-items-center mb-3">
+                            <h6 class="col-6 mb-0 font-weight-bold ">Email:</h6>
+                            <p class="col-6 mb-0"></p>
+                        </div>
+                        <div class="row align-items-center mb-3">
+                            <h6 class="col-6 mb-0 font-weight-bold ">Địa chỉ:</h6>
+                            <p class="col-6 mb-0"></p>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <div class="info-account">
+                    <div class="info-account-header text-center">
+                        <h5 class="font-weight-bold">Thông tin tài khoản</h5>
+                        <hr>
+                    </div>
+                    <div class="info-field-body">
+                        <div class="row align-items-center mb-3">
+                            <h6 class="col-6 mb-0 font-weight-bold ">Tên tài khoản:</h6>
+                            <p class="col-6 mb-0"></p>
+                        </div>
+                        <div class="row align-items-center mb-3">
+                            <h6 class="col-6 mb-0 font-weight-bold ">Trạng thái tài khoản:</h6>
+                            <p class="col-6 mb-0"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-primary" data-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Modal -->
+
+<script>
+
+    // map data tables
+    function mapMembers(members) {
+        return members.map(field => {
+            return `<tr class="text-center">
+                        <td class="align-middle">${field.TV_MA}</td>
+                        <td class="align-middle">${field.TV_TEN}</td>
+                        <td class="align-middle">${new Date(field.TV_NGAYSINH).getDate() + "-" + (new Date(field.TV_NGAYSINH).getMonth() + 1) + "-" + new Date(field.TV_NGAYSINH).getFullYear()}</td>
+                        <td class="align-middle">${field.email}</td>
+                        <td class="align-middle">${field.TV_SDT}</td>
+                        <td class="align-middle">${field.TK_TRANGTHAI == 1 ? 'Bình thường' : 'Tạm khóa'}</td>
+                        <td class="project-actions text-right text-center align-middle">
+                            <button class="btn btn-primary btn-sm btnView" data-toggle="modal" data-target="#viewModal" value="${field.TV_MA}">
+                                <i class="fas fa-eye">
+                                </i> Xem
+                            </button>
+                            <button class="btn ${field.TK_TRANGTHAI == 1 ? 'btn-danger' : 'btn-info'} btn-sm btnStatus" value="${field.TV_MA}-${field.TK_TRANGTHAI}">${field.TK_TRANGTHAI == 1 ? '<i class="fas fa-ban"></i>  Khóa' : ' <i class="fas fa-lock-open"></i> Mở khóa'}
+                            </button>
+                            
+                        </td>
+                    </tr>`
+        }).join(' ');
+    }
+
+    // update status
+    function updateStatus() {
+        const btnStatus = document.querySelectorAll('.btnStatus');
+        for (let btnItem of btnStatus) {
+            btnItem.addEventListener('click', () => {
+                tv_ma = btnItem.value.split("-")[0];
+                trangthai = btnItem.value.split("-")[1];
+
+                // Tạo form gửi data
+                const formData = new FormData();
+                formData.append('tv_ma', tv_ma);
+                formData.append('trangthai', trangthai == 1 ? 0 : 1);
+
+                fetch('http://localhost/TMDT/admin/modules/api/member.php/updateStatusMember', {
+                    method: 'POST',
+                    body: formData
+                })
+                    .then(data => {
+                        if (data.status == 200) {
+                            if(trangthai == 1) {
+                                toastr.success('Khóa tài khoản thành công.')
+                            }
+                            else {
+                                toastr.success('Mở khóa tài khoản thành công.')
+                            }
+                            desTroyDataTables();
+                            getData(status.value);
+                        }
+                        else {
+                            toastr.error('Đã có lỗi gì đó xảy ra.')
+                        }
+
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+            })
+        }
+    }
+
+    // get one member
+    function getOneMember() {
+        const btnViews = document.querySelectorAll('.btnView');
+        for (let btnView of btnViews) {
+            btnView.addEventListener('click', () => {
+                fetch('http://localhost/TMDT/admin/modules/api/member.php/getMemberByTV_MA?tv_ma=' + btnView.value)
+                    .then(response => response.json())
+                    .then(data => {
+                        let htmlMember = `<div class="info-member">
+                    <div class="info-member-header text-center">
+                        <h5 class="font-weight-bold">Thông tin cá nhân</h5>
+                        <hr>
+                    </div>
+                    <div class="info-member-body">
+                        <div class="row align-items-center mb-3">
+                            <h6 class="col-6 mb-0 font-weight-bold ">Mã thành viên:</h6>
+                            <p class="col-6 mb-0">${data[0].TV_MA}</p>
+                        </div>
+                        <div class="row align-items-center mb-3">
+                            <h6 class="col-6 mb-0 font-weight-bold ">Họ và tên:</h6>
+                            <p class="col-6 mb-0">${data[0].TV_TEN}</p>
+                        </div>
+                        <div class="row align-items-center mb-3">
+                            <h6 class="col-6 mb-0 font-weight-bold ">Ngày sinh:</h6>
+                            <p class="col-6 mb-0">${new Date(data[0].TV_NGAYSINH).getDate() + "-" + (new Date(data[0].TV_NGAYSINH).getMonth() + 1) + "-" + new Date(data[0].TV_NGAYSINH).getFullYear()}</p>
+                        </div>
+                        <div class="row align-items-center mb-3">
+                            <h6 class="col-6 mb-0 font-weight-bold ">Số điện thoại:</h6>
+                            <p class="col-6 mb-0">${data[0].TV_SDT}</p>
+                        </div>
+                        <div class="row align-items-center mb-3">
+                            <h6 class="col-6 mb-0 font-weight-bold ">Email:</h6>
+                            <p class="col-6 mb-0">${data[0].email}</p>
+                        </div>
+                        <div class="row align-items-center mb-3">
+                            <h6 class="col-6 mb-0 font-weight-bold ">Địa chỉ:</h6>
+                            <p class="col-6 mb-0">${data[0].TV_DC}</p>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <div class="info-account">
+                    <div class="info-account-header text-center">
+                        <h5 class="font-weight-bold">Thông tin tài khoản</h5>
+                        <hr>
+                    </div>
+                    <div class="info-field-body">
+                        <div class="row align-items-center mb-3">
+                            <h6 class="col-6 mb-0 font-weight-bold ">Tên tài khoản:</h6>
+                            <p class="col-6 mb-0">${data[0].TK_TEN}</p>
+                        </div>
+                        <div class="row align-items-center mb-3">
+                            <h6 class="col-6 mb-0 font-weight-bold ">Trạng thái tài khoản:</h6>
+                            <p class="col-6 mb-0">${data[0].TK_TRANGTHAI == 1 ? '<i class="fas fa-dot-circle text-success"></i> Bình thường' : '<i class="fas fa-ban text-danger"></i> Tạm khóa'}</p>
+                        </div>
+                    </div>
+                </div>`;
+
+                        viewModalBody.innerHTML = htmlMember;
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    });
+            })
+        }
+    }
+
+    // get data - search
+    async function getDataSearch(search) {
+        const members = await fetch('http://localhost/TMDT/admin/modules/api/member.php/getMemberBySearch?search=' + search)
+            .then(response => response.json())
+            .then(data => {
+                return data;
+            })
+            .catch(error => {
+                console.log(error);
+            });
+        let htmlMembers = mapMembers(members);
+        dataTable.innerHTML = htmlMembers;
+        dataTablesLoad();
+        // Bắt sự kiện nút xem sau khi load data
+        getOneMember()
+        // Bắt sự kiện nút khóa - mở khóa sau khi load data
+        updateStatus()
+    }
+
+    // get data
+    async function getData(status) {
+        if (status == 'all') {
+            const members = await fetch('http://localhost/TMDT/admin/modules/api/member.php/getAllMember')
+                .then(response => response.json())
+                .then(data => {
+                    return data;
+                })
+                .catch(error => {
+                    console.log(error);
+                });
+            let htmlMembers = mapMembers(members);
+            dataTable.innerHTML = htmlMembers;
+            dataTablesLoad();
+            // Bắt sự kiện nút xem sau khi load data
+            getOneMember()
+            // Bắt sự kiện nút khóa - mở khóa sau khi load data
+            updateStatus()
+        }
+        else {
+            desTroyDataTables();
+            const members = await fetch('http://localhost/TMDT/admin/modules/api/member.php/getMemberByStatus?tv_trangthai=' + status)
+                .then(response => response.json())
+                .then(data => {
+                    return data;
+                })  
+                .catch(error => {
+                    console.log(error);
+                });
+            let htmlMembers = mapMembers(members);
+            dataTable.innerHTML = htmlMembers;
+            dataTablesLoad();
+            // Bắt sự kiện nút xem sau khi load data
+            getOneMember()
+            // Bắt sự kiện nút khóa - mở khóa sau khi load data
+            updateStatus()
+        }
+    }
+
+
+
+    // Event
+    const dataTable = document.querySelector('#dataTable');
+    const viewModalBody = document.querySelector('#viewModelBody');
+    const btnSearch = document.querySelector('#btnSearch');
+    const status = document.querySelector('#selectPermission');
+    // load data
+    getData(status.value);
+
+    // Bắt sự kiện
+    status.addEventListener('change', () => {
+        desTroyDataTables();
+        getData(status.value);
+
+    });
+    btnSearch.addEventListener('click', () => {
+        desTroyDataTables();
+        status.value = 'all';
+        const inputSearch = document.querySelector('#inputSearch');
+        getDataSearch(inputSearch.value);
+    })
+
+
+
+</script>
